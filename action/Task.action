@@ -1,0 +1,9 @@
+# Define the task we want to execute could be an encoded string of PoseTime array or a number indicating index of goal
+# to run. This is the goal or input to the action server.
+string task
+----
+# define the goal to be executed from the task. This is the result or output.
+string goal
+---
+# define a feedback message which will provide incremental status report of the progress of the action.
+string status

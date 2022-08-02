@@ -1,0 +1,38 @@
+<root main_tree_to_execute = "MainTree" >
+    <BehaviorTree ID="MainTree">
+        <Sequence name="root_sequence">
+            <LoadMap />
+            <Localization message="{initial_pose}"/>
+            <TaskListener message="{task}"/>
+            <ReactiveSequence>
+                <Sequence>
+                    <!-- Gets task: PoseTimeArray and writes goal: PoseTime -->
+                    <ExecuteTask message="{task}" goal="{pose_time}" new_task="{new}"/>
+                    <!-- Restart whenever any child returns FAILURE or RUNNING -->
+                    <ReactiveSequence>
+                        <!--
+                        Should robot immediately stop where it is and end this task?
+                         OR
+                         Stop Immediately and move to next goal?
+                         OR
+                         Should robot end the task after completing this goal?
+                         -->
+                        <Stop preempt="{stop_code}"/>
+                        <!-- Wrap in Sequence seems to be the best practice. -->
+                        <Sequence>
+                            <!-- We want to be executing individual goals (PoseTime) from the PoseTimeArray -->
+                            <MoveRobot message="{pose_time}" preempt="{stop_code}" signal="{end}"/>
+                        </Sequence>
+                    </ReactiveSequence>
+                    <!-- A condition node that tells if to stop executing this sequence or loop. -->
+                    <!-- Would return FAILURE to make the loop continue or SUCCESS to break out of the loop-->
+                </Sequence>
+                <!-- Always check if finish task signal has been activated, else loop. -->
+                <FinishTask signal="{end}" new_task="{new}"/>
+            </ReactiveSequence>
+            <Inverter>
+                <MoveToBase message="{initial_pose}"/>
+            </Inverter>
+        </Sequence>
+    </BehaviorTree>
+</root>

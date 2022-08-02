@@ -1,0 +1,8 @@
+# define goal, not really used for now.
+int8 goal
+----
+# define the result or output.
+int8 result
+---
+# define a feedback message which will provide incremental status report of the progress of the action.
+int8 status

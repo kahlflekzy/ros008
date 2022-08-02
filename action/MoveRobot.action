@@ -1,0 +1,8 @@
+# Define the goal
+string goal
+----
+# define the result
+int8 result
+---
+# define a feedback message
+int16 status # provides incremental status report of the progress of the action
